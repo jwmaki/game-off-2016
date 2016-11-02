@@ -23,17 +23,19 @@ var spawn_player = function() {
 	console.log(g.h)
 	var direction = 1
 	var acceleration = 5
-	var player = Crafty.e('2D, Canvas, Collision, Motion, Color, Twoway')
+	var player = Crafty.e('2D, DOM, Player, Collision, Motion, Color, Twoway, Tween')
 		player.attr({x: Crafty.viewport._width / 2, y: Crafty.viewport._height * .8, w: 50, h: 50})
 			.color('red') 
 			.twoway(200)
 			.checkHits('Solid') // check for collisions with entities that have the Solid component in each frame
 		    .bind("HitOn", function(hitData) {
 		        Crafty.log("Collision with Solid entity occurred for the first time.");
+		        this.attr({rotation:0})
+   				this.tween({rotation:720}, 2000, "smootherStep")
 		    })
-		    .bind("HitOff", function(comp) {
-		        Crafty.log("Collision with Solid entity ended.");
-		    });
+		    // .bind("HitOff", function(comp) {
+		    //     Crafty.log("Collision with Solid entity ended.");
+		    // });
 		  // .bind('EnterFrame', function() {
 		  // 	this.x = this.x + acceleration*direction
 		  // 	if(this.x > 1000 || this.x < 300)
@@ -53,19 +55,13 @@ var spawn_player = function() {
 }
 
 var spawn_block = function(x){
-	if(frame == 0){
-		return Crafty.e('2D, Canvas, Collision, Color, Twoway, Gravity')
+	if(frame == 0 || frame == 12 ){
+		return Crafty.e('2D, Canvas, Collision, Color, Twoway, Gravity, Solid')
 		  .attr({x: x, y: 0, w: 50, h: 50})
 		  .color('#F00')
 		  .twoway(200)
 		  .gravity('Floor')
-		  .checkHits('Solid') // check for collisions with entities that have the Solid component in each frame
-		    .bind("HitOn", function(hitData) {
-		        Crafty.log("Collision with Solid entity occurred for the first time.");
-		    })
-		    .bind("HitOff", function(comp) {
-		        Crafty.log("Collision with Solid entity ended.");
-		    });
+		  
 	}
 }
 
